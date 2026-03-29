@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PuppyKRON</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
+      line-height: 1.5;
+    }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 46px; height: 46px; border-radius: 999px;
+      display: grid; place-items: center; font-size: 22px; color: white;
+      background: linear-gradient(135deg, #22c55e, #059669);
+      box-shadow: 0 10px 25px rgba(34,197,94,.25);
+    }
+    .brand-title { font-size: 20px; font-weight: 700; }
+    .brand-sub { font-size: 12px; color: #64748b; }
+    .lang-switch { display: flex; gap: 8px; }
+    .lang-btn {
+      border: 1px solid #cbd5e1; background: white; padding: 8px 12px;
+      border-radius: 12px; cursor: pointer; font-weight: 600;
+    }
+    .lang-btn.active { background: #0f172a; color: white; border-color: #0f172a; }
+    .hero {
+      padding: 88px 0 72px;
+      background:
+        radial-gradient(circle at top left, rgba(34,197,94,.12), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(16,185,129,.12), transparent 26%),
+        #ffffff;
+    }
+    .hero-grid {
+      display: grid; gap: 32px; align-items: center;
+      grid-template-columns: 1.15fr .85fr;
+    }
+    .badge {
+      display: inline-block; padding: 10px 14px; border-radius: 999px;
+      background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0;
+      font-size: 14px; font-weight: 700;
+    }
+    h1 {
+      font-size: 60px; line-height: 1.04; letter-spacing: -1.5px;
+      margin: 18px 0;
+    }
+    .lead { font-size: 20px; color: #475569; max-width: 760px; }
+    .actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 28px; }
+    .btn {
+      display: inline-block; padding: 14px 22px; border-radius: 18px;
+      font-weight: 700; cursor: pointer; border: 1px solid transparent;
+    }
+    .btn-primary { background: #0f172a; color: white; }
+    .btn-secondary { background: white; color: #0f172a; border-color: #cbd5e1; }
+    .hero-card {
+      background: linear-gradient(135deg, #ecfdf5, #ffffff);
+      border: 1px solid #d1fae5; border-radius: 28px; padding: 22px;
+      box-shadow: 0 24px 60px rgba(16,185,129,.12);
+    }
+    .card-inner { background: white; border: 1px solid #e5e7eb; border-radius: 22px; padding: 22px; }
+    .pill { display: inline-block; font-size: 12px; font-weight: 700; color: #047857; background: #d1fae5; border-radius: 999px; padding: 8px 12px; }
+    .card-block { background: #f8fafc; border-radius: 18px; padding: 16px; margin-top: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+    .stat { border: 1px solid #e5e7eb; border-radius: 22px; padding: 18px; background: white; }
+    .stat .value { font-size: 28px; font-weight: 800; }
+    .stat .label { font-size: 13px; color: #64748b; margin-top: 4px; }
+    .section { padding: 72px 0; }
+    .section-alt { background: #f8fafc; }
+    .section-title { font-size: 42px; line-height: 1.1; letter-spacing: -1px; margin: 10px 0 14px; }
+    .section-kicker { font-size: 13px; text-transform: uppercase; letter-spacing: .2em; color: #059669; font-weight: 800; }
+    .section-text { font-size: 18px; color: #475569; max-width: 850px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .feature, .box {
+      background: white; border: 1px solid #e5e7eb; border-radius: 28px; padding: 24px;
+      box-shadow: 0 10px 24px rgba(15,23,42,.04);
+    }
+    .icon { font-size: 36px; margin-bottom: 14px; }
+    .feature h3, .box h3 { margin: 0 0 10px; font-size: 26px; }
+    .muted { color: #64748b; }
+    .donation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px; }
+    .tier {
+      background: white; border: 1px solid #e5e7eb; border-radius: 24px; padding: 24px; text-align: center;
+      box-shadow: 0 8px 18px rgba(15,23,42,.04);
+    }
+    .tier-price { font-size: 34px; font-weight: 800; margin: 8px 0; }
+    .token {
+      background: linear-gradient(135deg, #020617, #111827);
+      color: white; border-radius: 30px; padding: 30px;
+      box-shadow: 0 24px 60px rgba(2,6,23,.25);
+    }
+    .token-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 20px; }
+    .token-item { border: 1px solid rgba(255,255,255,.12); border-radius: 18px; padding: 16px; background: rgba(255,255,255,.04); }
+    .adoption-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 26px; }
+    .dog-card {
+      border: 1px solid #e5e7eb; border-radius: 24px; padding: 22px; background: white; text-align: center;
+      box-shadow: 0 8px 18px rgba(15,23,42,.04);
+    }
+    .dog-emoji { font-size: 42px; }
+    .domain-list { display: grid; gap: 12px; margin-top: 22px; }
+    .domain-item { border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.05); padding: 14px; border-radius: 18px; }
+    .footer { text-align: center; padding: 28px 0 40px; color: #64748b; }
+    @media (max-width: 980px) {
+      .hero-grid, .grid-2, .grid-3, .grid-4, .donation-grid, .adoption-grid, .token-grid, .stats { grid-template-columns: 1fr; }
+      h1 { font-size: 42px; }
+      .section-title { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">🐾</div>
+        <div>
+          <div class="brand-title">PuppyKRON</div>
+          <div class="brand-sub" data-i18n="brandSub">Rehabilitation & Life Center</div>
+        </div>
+      </div>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="EN">EN</button>
+        <button class="lang-btn" data-lang="TR">TR</button>
+      </div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge" data-i18n="badge">Çeşme, İzmir • PuppyKRON Shelter Initiative</div>
+        <h1 data-i18n="heroTitle">A premium animal rescue brand built to protect lives and fund long-term care.</h1>
+        <div class="lead" data-i18n="heroLead">PuppyKRON is a next-generation animal rehabilitation and life center project for Çeşme. It combines shelter planning, veterinary care, adoption visibility, community fundraising, and future KRON Family brand expansion.</div>
+        <div class="actions">
+          <a href="#donate" class="btn btn-primary" data-i18n="ctaDonate">Donate Now</a>
+          <a href="#token" class="btn btn-secondary" data-i18n="ctaToken">Explore PuppyKRON Token</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><div class="value">250–350</div><div class="label" data-i18n="stat1">Planned Capacity</div></div>
+          <div class="stat"><div class="value">Çeşme</div><div class="label" data-i18n="stat2">Project Location</div></div>
+          <div class="stat"><div class="value">5,756 m²</div><div class="label" data-i18n="stat3">Land Size</div></div>
+          <div class="stat"><div class="value">Rescue</div><div class="label" data-i18n="stat4">Core Mission</div></div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="card-inner">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            <div>
+              <div class="muted" data-i18n="cardTitle">Project Identity</div>
+              <div style="font-size:28px; font-weight:800; margin-top:4px;">PuppyKRON</div>
+            </div>
+            <div class="pill" data-i18n="cardPill">KRON Family Ready</div>
+          </div>
+          <div class="card-block">
+            <div class="muted" data-i18n="cardBlock1Title">Core Positioning</div>
+            <div style="font-weight:700; margin-top:6px;" data-i18n="cardBlock1Text">Not just a shelter — a branded rescue ecosystem with public trust and scalable support channels.</div>
+          </div>
+          <div class="grid-2" style="margin-top:14px;">
+            <div class="box">
+              <div class="muted" data-i18n="domainsTitle">Primary Domains</div>
+              <div style="margin-top:8px; font-weight:700;">puppykron.com</div>
+              <div style="font-weight:700;">puppykron.org</div>
+            </div>
+            <div class="box">
+              <div class="muted" data-i18n="expansionTitle">Suggested Expansion</div>
+              <div style="margin-top:8px; font-weight:700;" data-i18n="expansionList">Donation Portal • Adoption Portal • Token Page</div>
+            </div>
+          </div>
+          <div class="token" style="margin-top:14px; padding:18px 20px; border-radius:22px;">
+            <div class="muted" style="color:#94a3b8;" data-i18n="visionTitle">Vision</div>
+            <div style="font-size:20px; font-weight:700; margin-top:8px;" data-i18n="visionText">Build a trusted rescue center first, then connect community support, brand power, and sustainable revenue around it.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-kicker" data-i18n="pillarsKicker">Mission Pillars</div>
+      <h2 class="section-title" data-i18n="pillarsTitle">Built around rescue, treatment, and long-term sustainability.</h2>
+      <div class="grid-3" style="margin-top:26px;">
+        <div class="feature">
+          <div class="icon">🐾</div>
+          <h3 data-i18n="pillar1Title">Rescue & Protection</h3>
+          <div class="muted" data-i18n="pillar1Text">A structured shelter and intake system for vulnerable animals, with safe arrival flow, registration, and long-term care planning.</div>
+        </div>
+        <div class="feature">
+          <div class="icon">🏥</div>
+          <h3 data-i18n="pillar2Title">Veterinary & Rehabilitation</h3>
+          <div class="muted" data-i18n="pillar2Text">Dedicated treatment, quarantine, rehabilitation, and recovery areas designed for real animal welfare standards.</div>
+        </div>
+        <div class="feature">
+          <div class="icon">💚</div>
+          <h3 data-i18n="pillar3Title">Sustainable Funding</h3>
+          <div class="muted" data-i18n="pillar3Text">PuppyKRON is planned not only as a shelter, but as a durable ecosystem with donations, partnerships, merchandise, events, and future digital fundraising layers.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="donate">
+    <div class="container">
+      <div class="section-kicker" data-i18n="donateKicker">Donation & Sponsorship</div>
+      <h2 class="section-title" data-i18n="donateTitle">Support the shelter with one-time donations or monthly sponsorships.</h2>
+      <div class="section-text" data-i18n="donateText">This first version uses simple buttons and sponsor cards. Later, these can be connected to Stripe, iyzico, or crypto wallets.</div>
+
+      <div class="donation-grid">
+        <div class="tier">
+          <div class="muted" data-i18n="donation1">Quick Donation</div>
+          <div class="tier-price">€10</div>
+          <a class="btn btn-primary" href="#contact" data-i18n="donateBtn">Donate</a>
+        </div>
+        <div class="tier">
+          <div class="muted" data-i18n="donation2">Quick Donation</div>
+          <div class="tier-price">€50</div>
+          <a class="btn btn-primary" href="#contact" data-i18n="donateBtn">Donate</a>
+        </div>
+        <div class="tier">
+          <div class="muted" data-i18n="donation3">Quick Donation</div>
+          <div class="tier-price">€100</div>
+          <a class="btn btn-primary" href="#contact" data-i18n="donateBtn">Donate</a>
+        </div>
+      </div>
+
+      <div class="grid-3" style="margin-top:20px;">
+        <div class="tier">
+          <div class="muted" data-i18n="sponsor1Title">Basic Sponsor</div>
+          <div class="tier-price">€20<span style="font-size:16px; font-weight:600;">/mo</span></div>
+          <div class="muted" data-i18n="sponsor1Text">Entry-level monthly support for food and daily care.</div>
+        </div>
+        <div class="tier">
+          <div class="muted" data-i18n="sponsor2Title">Premium Sponsor</div>
+          <div class="tier-price">€50<span style="font-size:16px; font-weight:600;">/mo</span></div>
+          <div class="muted" data-i18n="sponsor2Text">Stronger recurring support for treatment and rehabilitation.</div>
+        </div>
+        <div class="tier">
+          <div class="muted" data-i18n="sponsor3Title">Guardian Sponsor</div>
+          <div class="tier-price">€100<span style="font-size:16px; font-weight:600;">/mo</span></div>
+          <div class="muted" data-i18n="sponsor3Text">High-impact monthly support for shelter growth and emergency care.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="adoption">
+    <div class="container">
+      <div class="section-kicker" data-i18n="adoptKicker">Adoption</div>
+      <h2 class="section-title" data-i18n="adoptTitle">A simple first-stage adoption showcase.</h2>
+      <div class="section-text" data-i18n="adoptText">For the first version, these are sample profiles. Later, we can connect real photos, profiles, and application forms.</div>
+      <div class="adoption-grid">
+        <div class="dog-card">
+          <div class="dog-emoji">🐕</div>
+          <h3>Luna</h3>
+          <div class="muted" data-i18n="dog1">Friendly, calm, rescue candidate</div>
+          <div style="margin-top:16px;"><a href="#contact" class="btn btn-primary" data-i18n="adoptBtn">Adopt</a></div>
+        </div>
+        <div class="dog-card">
+          <div class="dog-emoji">🐶</div>
+          <h3>Max</h3>
+          <div class="muted" data-i18n="dog2">Young, energetic, ready for a home</div>
+          <div style="margin-top:16px;"><a href="#contact" class="btn btn-primary" data-i18n="adoptBtn">Adopt</a></div>
+        </div>
+        <div class="dog-card">
+          <div class="dog-emoji">🐾</div>
+          <h3>Mia</h3>
+          <div class="muted" data-i18n="dog3">Needs care, gentle support, and rehabilitation</div>
+          <div style="margin-top:16px;"><a href="#contact" class="btn btn-primary" data-i18n="adoptBtn">Adopt</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt" id="token">
+    <div class="container">
+      <div class="token">
+        <div class="section-kicker" style="color:#34d399;" data-i18n="tokenKicker">PuppyKRON Memecoin Layer</div>
+        <h2 class="section-title" style="color:white; margin-top:8px;" data-i18n="tokenTitle">Community branding for the KRON Family.</h2>
+        <div class="section-text" style="color:#cbd5e1; max-width:780px;" data-i18n="tokenText">The shelter should come first. The token layer can come later as a community growth and fundraising brand extension, once public trust and real-world activity are visible.</div>
+        <div class="token-grid">
+          <div class="token-item"><strong data-i18n="tokenItem1Label">Concept</strong><div class="muted" style="color:#cbd5e1; margin-top:6px;" data-i18n="tokenItem1Text">Animal-focused KRON Family memecoin</div></div>
+          <div class="token-item"><strong data-i18n="tokenItem2Label">Purpose</strong><div class="muted" style="color:#cbd5e1; margin-top:6px;" data-i18n="tokenItem2Text">Community growth, visibility, branded fundraising</div></div>
+          <div class="token-item"><strong data-i18n="tokenItem3Label">Timing</strong><div class="muted" style="color:#cbd5e1; margin-top:6px;" data-i18n="tokenItem3Text">After shelter trust, website launch, and public proof</div></div>
+        </div>
+        <div class="domain-list">
+          <div class="domain-item">puppykron.com — <span data-i18n="domain1">Main public brand</span></div>
+          <div class="domain-item">puppykron.org — <span data-i18n="domain2">Trust / nonprofit style presence</span></div>
+          <div class="domain-item">token.puppykron.com — <span data-i18n="domain3">Future token landing page</span></div>
+          <div class="domain-item">donate.puppykron.com — <span data-i18n="domain4">Donation portal</span></div>
+          <div class="domain-item">adopt.puppykron.com — <span data-i18n="domain5">Adoption portal</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="grid-2">
+        <div class="box">
+          <div class="section-kicker" data-i18n="contactKicker">Contact</div>
+          <h2 class="section-title" data-i18n="contactTitle">First version ready for launch.</h2>
+          <div class="section-text" data-i18n="contactText">This static version is designed for simple GitHub upload and immediate deployment. It can later be expanded with real payment tools, admin panels, donor management, and a dedicated token microsite.</div>
+        </div>
+        <div class="box">
+          <h3 data-i18n="nextTitle">Recommended next upgrades</h3>
+          <div class="muted" style="margin-top:10px;" data-i18n="next1">1. Real donation links</div>
+          <div class="muted" data-i18n="next2">2. Real animal profiles and photos</div>
+          <div class="muted" data-i18n="next3">3. Separate token landing page</div>
+          <div class="muted" data-i18n="next4">4. Sponsor application form</div>
+          <div class="muted" data-i18n="next5">5. Turkish + German + English full multilingual build</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">© 2026 PuppyKRON</div>
+
+  <script>
+    const translations = {
+      EN: {
+        brandSub: "Rehabilitation & Life Center",
+        badge: "Çeşme, İzmir • PuppyKRON Shelter Initiative",
+        heroTitle: "A premium animal rescue brand built to protect lives and fund long-term care.",
+        heroLead: "PuppyKRON is a next-generation animal rehabilitation and life center project for Çeşme. It combines shelter planning, veterinary care, adoption visibility, community fundraising, and future KRON Family brand expansion.",
+        ctaDonate: "Donate Now",
+        ctaToken: "Explore PuppyKRON Token",
+        stat1: "Planned Capacity",
+        stat2: "Project Location",
+        stat3: "Land Size",
+        stat4: "Core Mission",
+        cardTitle: "Project Identity",
+        cardPill: "KRON Family Ready",
+        cardBlock1Title: "Core Positioning",
+        cardBlock1Text: "Not just a shelter — a branded rescue ecosystem with public trust and scalable support channels.",
+        domainsTitle: "Primary Domains",
+        expansionTitle: "Suggested Expansion",
+        expansionList: "Donation Portal • Adoption Portal • Token Page",
+        visionTitle: "Vision",
+        visionText: "Build a trusted rescue center first, then connect community support, brand power, and sustainable revenue around it.",
+        pillarsKicker: "Mission Pillars",
+        pillarsTitle: "Built around rescue, treatment, and long-term sustainability.",
+        pillar1Title: "Rescue & Protection",
+        pillar1Text: "A structured shelter and intake system for vulnerable animals, with safe arrival flow, registration, and long-term care planning.",
+        pillar2Title: "Veterinary & Rehabilitation",
+        pillar2Text: "Dedicated treatment, quarantine, rehabilitation, and recovery areas designed for real animal welfare standards.",
+        pillar3Title: "Sustainable Funding",
+        pillar3Text: "PuppyKRON is planned not only as a shelter, but as a durable ecosystem with donations, partnerships, merchandise, events, and future digital fundraising layers.",
+        donateKicker: "Donation & Sponsorship",
+        donateTitle: "Support the shelter with one-time donations or monthly sponsorships.",
+        donateText: "This first version uses simple buttons and sponsor cards. Later, these can be connected to Stripe, iyzico, or crypto wallets.",
+        donation1: "Quick Donation",
+        donation2: "Quick Donation",
+        donation3: "Quick Donation",
+        donateBtn: "Donate",
+        sponsor1Title: "Basic Sponsor",
+        sponsor1Text: "Entry-level monthly support for food and daily care.",
+        sponsor2Title: "Premium Sponsor",
+        sponsor2Text: "Stronger recurring support for treatment and rehabilitation.",
+        sponsor3Title: "Guardian Sponsor",
+        sponsor3Text: "High-impact monthly support for shelter growth and emergency care.",
+        adoptKicker: "Adoption",
+        adoptTitle: "A simple first-stage adoption showcase.",
+        adoptText: "For the first version, these are sample profiles. Later, we can connect real photos, profiles, and application forms.",
+        dog1: "Friendly, calm, rescue candidate",
+        dog2: "Young, energetic, ready for a home",
+        dog3: "Needs care, gentle support, and rehabilitation",
+        adoptBtn: "Adopt",
+        tokenKicker: "PuppyKRON Memecoin Layer",
+        tokenTitle: "Community branding for the KRON Family.",
+        tokenText: "The shelter should come first. The token layer can come later as a community growth and fundraising brand extension, once public trust and real-world activity are visible.",
+        tokenItem1Label: "Concept",
+        tokenItem1Text: "Animal-focused KRON Family memecoin",
+        tokenItem2Label: "Purpose",
+        tokenItem2Text: "Community growth, visibility, branded fundraising",
+        tokenItem3Label: "Timing",
+        tokenItem3Text: "After shelter trust, website launch, and public proof",
+        domain1: "Main public brand",
+        domain2: "Trust / nonprofit style presence",
+        domain3: "Future token landing page",
+        domain4: "Donation portal",
+        domain5: "Adoption portal",
+        contactKicker: "Contact",
+        contactTitle: "First version ready for launch.",
+        contactText: "This static version is designed for simple GitHub upload and immediate deployment. It can later be expanded with real payment tools, admin panels, donor management, and a dedicated token microsite.",
+        nextTitle: "Recommended next upgrades",
+        next1: "1. Real donation links",
+        next2: "2. Real animal profiles and photos",
+        next3: "3. Separate token landing page",
+        next4: "4. Sponsor application form",
+        next5: "5. Turkish + German + English full multilingual build"
+      },
+      TR: {
+        brandSub: "Rehabilitasyon ve Yaşam Merkezi",
+        badge: "Çeşme, İzmir • PuppyKRON Barınak Girişimi",
+        heroTitle: "Hayatları korumak ve uzun vadeli bakımı finanse etmek için kurulmuş premium bir hayvan yaşam markası.",
+        heroLead: "PuppyKRON, Çeşme için yeni nesil bir hayvan rehabilitasyon ve yaşam merkezi projesidir. Barınak planlamasını, veteriner bakımını, sahiplendirme görünürlüğünü, topluluk fonlamasını ve gelecekteki KRON Family genişlemesini bir araya getirir.",
+        ctaDonate: "Bağış Yap",
+        ctaToken: "PuppyKRON Tokeni İncele",
+        stat1: "Planlanan Kapasite",
+        stat2: "Proje Konumu",
+        stat3: "Arsa Büyüklüğü",
+        stat4: "Ana Misyon",
+        cardTitle: "Proje Kimliği",
+        cardPill: "KRON Family Uyumlu",
+        cardBlock1Title: "Temel Konumlandırma",
+        cardBlock1Text: "Sadece bir barınak değil — kamu güveni ve ölçeklenebilir destek kanalları olan markalı bir kurtarma ekosistemi.",
+        domainsTitle: "Ana Domainler",
+        expansionTitle: "Önerilen Genişleme",
+        expansionList: "Bağış Portalı • Sahiplendirme Portalı • Token Sayfası",
+        visionTitle: "Vizyon",
+        visionText: "Önce güvenilir bir kurtarma merkezi kur, sonra bunun etrafına topluluk desteği, marka gücü ve sürdürülebilir gelir inşa et.",
+        pillarsKicker: "Misyon Sütunları",
+        pillarsTitle: "Kurtarma, tedavi ve uzun vadeli sürdürülebilirlik etrafında kuruldu.",
+        pillar1Title: "Kurtarma ve Koruma",
+        pillar1Text: "Savunmasız hayvanlar için güvenli karşılama, kayıt ve uzun vadeli bakım planlamasını içeren yapılandırılmış bir barınak ve kabul sistemi.",
+        pillar2Title: "Veteriner ve Rehabilitasyon",
+        pillar2Text: "Gerçek hayvan refahı standartlarına göre tasarlanmış tedavi, karantina, rehabilitasyon ve iyileşme alanları.",
+        pillar3Title: "Sürdürülebilir Finansman",
+        pillar3Text: "PuppyKRON yalnızca bir barınak değil; bağışlar, ortaklıklar, ürünler, etkinlikler ve gelecekteki dijital kampanyalarla desteklenen kalıcı bir ekosistem olarak planlanmaktadır.",
+        donateKicker: "Bağış ve Sponsorluk",
+        donateTitle: "Tek seferlik bağışlar veya aylık sponsorluklarla barınağı destekleyin.",
+        donateText: "Bu ilk sürüm basit butonlar ve sponsorluk kartları kullanır. Daha sonra Stripe, iyzico veya kripto cüzdanlara bağlanabilir.",
+        donation1: "Hızlı Bağış",
+        donation2: "Hızlı Bağış",
+        donation3: "Hızlı Bağış",
+        donateBtn: "Bağış Yap",
+        sponsor1Title: "Temel Sponsor",
+        sponsor1Text: "Mama ve günlük bakım için başlangıç seviyesinde aylık destek.",
+        sponsor2Title: "Premium Sponsor",
+        sponsor2Text: "Tedavi ve rehabilitasyon için daha güçlü düzenli destek.",
+        sponsor3Title: "Koruyucu Sponsor",
+        sponsor3Text: "Barınak büyümesi ve acil bakım için yüksek etkili aylık destek.",
+        adoptKicker: "Sahiplendirme",
+        adoptTitle: "İlk aşama için basit bir sahiplendirme vitrini.",
+        adoptText: "İlk sürümde bunlar örnek profillerdir. Daha sonra gerçek fotoğraflar, profiller ve başvuru formları bağlanabilir.",
+        dog1: "Dost canlısı, sakin, kurtarma adayı",
+        dog2: "Genç, enerjik, yuvasına hazır",
+        dog3: "Bakım, nazik destek ve rehabilitasyon gerekiyor",
+        adoptBtn: "Sahiplen",
+        tokenKicker: "PuppyKRON Memecoin Katmanı",
+        tokenTitle: "KRON Family için topluluk markalaması.",
+        tokenText: "Önce barınak gelmeli. Token katmanı, kamu güveni ve gerçek faaliyet görünür olduktan sonra topluluk büyümesi ve bağış markası uzantısı olarak gelebilir.",
+        tokenItem1Label: "Konsept",
+        tokenItem1Text: "Hayvan odaklı KRON Family memecoin",
+        tokenItem2Label: "Amaç",
+        tokenItem2Text: "Topluluk büyümesi, görünürlük, markalı fon toplama",
+        tokenItem3Label: "Zamanlama",
+        tokenItem3Text: "Barınak güveni, site yayını ve kamusal kanıttan sonra",
+        domain1: "Ana kamu markası",
+        domain2: "Güven / dernek tarzı görünüm",
+        domain3: "Gelecekteki token landing page",
+        domain4: "Bağış portalı",
+        domain5: "Sahiplendirme portalı",
+        contactKicker: "İletişim",
+        contactTitle: "İlk sürüm yayına hazır.",
+        contactText: "Bu statik sürüm, GitHub üzerinden kolay yükleme ve hızlı yayın için tasarlanmıştır. Daha sonra gerçek ödeme araçları, yönetim panelleri, bağışçı yönetimi ve ayrı bir token microsite ile genişletilebilir.",
+        nextTitle: "Önerilen sonraki yükseltmeler",
+        next1: "1. Gerçek bağış linkleri",
+        next2: "2. Gerçek hayvan profilleri ve fotoğrafları",
+        next3: "3. Ayrı token landing page",
+        next4: "4. Sponsor başvuru formu",
+        next5: "5. Türkçe + Almanca + İngilizce tam çok dilli yapı"
+      }
+    };
+
+    function applyLanguage(lang) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) el.textContent = translations[lang][key];
+      });
+      document.documentElement.lang = lang === 'TR' ? 'tr' : 'en';
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+      });
+    }
+
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => applyLanguage(btn.getAttribute('data-lang')));
+    });
+  </script>
+</body>
+</html>
