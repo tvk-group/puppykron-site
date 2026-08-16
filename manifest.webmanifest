@@ -1,0 +1,11 @@
+{
+  "name": "PuppyKRON",
+  "short_name": "PuppyKRON",
+  "description": "Development-stage KRON ecosystem community project.",
+  "lang": "en",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#052e2b",
+  "theme_color": "#059669",
+  "icons": [{"src": "/assets/seo/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}]
+}
